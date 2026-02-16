@@ -168,8 +168,5 @@ Output: `results/outputs/extracted_links.csv`
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- Prof. Daniel Garijo (UPM) - Course instructor
-- Ontology Engineering Group (OEG-UPM)
-- Grobid development team
