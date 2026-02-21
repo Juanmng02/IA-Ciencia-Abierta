@@ -24,7 +24,6 @@ ai-open-science-task1/
 ├── .gitignore               # Files to ignore in git
 ├── requirements.txt         # Python dependencies
 ├── data/
-│   ├── papers/              # Original PDF files (10 papers)
 │   └── processed/           # Grobid XML outputs
 ├── src/
 │   ├── extract_text.py      # Grobid processing pipeline
