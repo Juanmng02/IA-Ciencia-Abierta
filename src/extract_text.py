@@ -2,8 +2,8 @@ import os
 import requests
 from pathlib import Path
 
-# Configuration
-GROBID_URL = "http://localhost:8070"
+# Configuration - Use environment variable if available
+GROBID_URL = os.environ.get('GROBID_URL', 'http://localhost:8070')
 INPUT_DIR = "data/papers"
 OUTPUT_DIR = "data/processed"
 
@@ -55,7 +55,7 @@ def main():
         return
     
     print(f"Found {len(pdf_files)} PDF files to process")
-    print(f"Make sure Grobid is running at {GROBID_URL}\n")
+    print(f"Using Grobid at {GROBID_URL}\n")
     
     # Process each PDF
     successful = 0
