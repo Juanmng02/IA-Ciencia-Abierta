@@ -1,0 +1,26 @@
+services:
+  grobid:
+    image: lfoppiano/grobid:0.8.0
+    ports:
+      - "8070:8070"
+    networks:
+      - analysis-network
+
+  analysis:
+    build: .
+    image: ai-open-science:v1.0
+    depends_on:
+      - grobid
+    environment:
+      - GROBID_URL=http://grobid:8070
+    volumes:
+      - ./data/papers:/app/data/papers
+      - ./data/processed:/app/data/processed
+      - ./results:/app/results
+    networks:
+      - analysis-network
+    command: tail -f /dev/null    # ← ESTA LÍNEA ES CRÍTICA
+
+networks:
+  analysis-network:
+    driver: bridge
