@@ -2,6 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/1158448998.svg)](https://doi.org/10.5281/zenodo.18912872)
 [![Documentation Status](https://readthedocs.org/projects/ia-ciencia-abierta/badge/?version=latest)](https://ia-ciencia-abierta.readthedocs.io/en/latest/)
+[![Tests](https://github.com/Juanmng02/IA-Ciencia-Abierta/actions/workflows/tests.yml/badge.svg)](https://github.com/Juanmng02/IA-Ciencia-Abierta/actions/workflows/tests.yml)
 
 ## Description
 
