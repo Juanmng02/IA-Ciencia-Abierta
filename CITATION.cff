@@ -13,7 +13,7 @@ version: "1.0.0"
 date-released: "2026-02-01"
 license: MIT
 repository-code: "https://github.com/Juanmng02/IA-Ciencia-Abierta"
-doi: "10.5281/zenodo.18912872"
+doi: "10.5281/zenodo.18935493"
 keywords:
   - open science
   - text extraction

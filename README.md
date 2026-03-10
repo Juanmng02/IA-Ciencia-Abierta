@@ -1,6 +1,6 @@
 # AI Open Science - Task 1: Text Extraction and Analysis
 
-[![DOI](https://zenodo.org/badge/1158448998.svg)](https://doi.org/10.5281/zenodo.18912872)
+[![DOI](https://zenodo.org/badge/1158448998.svg)](https://doi.org/10.5281/zenodo.18935493)
 [![Documentation Status](https://readthedocs.org/projects/ia-ciencia-abierta/badge/?version=latest)](https://ia-ciencia-abierta.readthedocs.io/en/latest/)
 [![Tests](https://github.com/Juanmng02/IA-Ciencia-Abierta/actions/workflows/tests.yml/badge.svg)](https://github.com/Juanmng02/IA-Ciencia-Abierta/actions/workflows/tests.yml)
 
@@ -680,7 +680,7 @@ If you use this software in your research, please cite it as:
   title        = {AI Open Science - Task 1: Text Extraction and Analysis},
   year         = 2026,
   publisher    = {GitHub},
-  doi          = {10.5281/zenodo.18912872},
+  doi          = {10.5281/zenodo.18935493},
   url          = {https://github.com/Juanmng02/IA-Ciencia-Abierta}
 }
 ```
