@@ -7,7 +7,7 @@
 This project performs automated analysis on 10 open-access scientific articles using Grobid and Python. The analysis includes:
 
 - Keyword cloud generation from abstracts
-- Visualization of figure counts per article  
+- Visualization of figure counts per article
 - Extraction of all links found in papers
 
 ## Objectives
@@ -97,6 +97,13 @@ Keep this terminal running. Grobid will be available at http://localhost:8070
 
 Verify it's working by opening http://localhost:8070 in your browser.
 
+#### Step 5: Add your papers
+
+Place your PDF files in the `data/papers/` directory:
+```bash
+cp /path/to/your/papers/*.pdf data/papers/
+```
+
 ### Method 2: Using pip
 
 If you prefer not to use Conda:
@@ -106,33 +113,42 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+Then follow Step 4 and Step 5 from Method 1 to start Grobid and add your papers.
+
 ### Method 3: Using Docker Compose (Fully Containerized)
 
 #### Quick Start
 
 1. **Start all services** (Grobid + Analysis):
 ```bash
-   docker-compose up -d
+docker-compose up -d
 ```
 
-2. **Run analysis scripts**:
+2. **Add your papers**:
+
+Place your PDF files in `data/papers/` before running the scripts:
 ```bash
-   # Process PDFs with Grobid
-   docker-compose exec analysis python src/extract_text.py
-   
-   # Generate keyword cloud
-   docker-compose exec analysis python src/keyword_cloud.py
-   
-   # Analyze figures
-   docker-compose exec analysis python src/figures_analysis.py
-   
-   # Extract links
-   docker-compose exec analysis python src/links_extraction.py
+cp /path/to/your/papers/*.pdf data/papers/
 ```
 
-3. **Stop services**:
+3. **Run analysis scripts**:
 ```bash
-   docker-compose down
+# Process PDFs with Grobid
+docker-compose exec analysis python src/extract_text.py
+
+# Generate keyword cloud
+docker-compose exec analysis python src/keyword_cloud.py
+
+# Analyze figures
+docker-compose exec analysis python src/figures_analysis.py
+
+# Extract links
+docker-compose exec analysis python src/links_extraction.py
+```
+
+4. **Stop services**:
+```bash
+docker-compose down
 ```
 
 #### View logs:
@@ -471,7 +487,7 @@ This section explains how each analysis output was validated to ensure accuracy 
 **Technical Notes**:
 - Used three extraction methods:
   1. XML `<ptr>` elements with target attributes
-  2. XML `<ref>` elements with target attributes  
+  2. XML `<ref>` elements with target attributes
   3. Regex pattern: `https?://[^\s<>"{}|\\^`\[\]]+`
 - Duplicate URLs removed
 
@@ -578,7 +594,7 @@ conda env export > environment.yml
 - **Base Image**: python:3.10-slim
 - **Size**: ~500MB
 - **Includes**: All Python dependencies from requirements.txt
-- **Volumes**: 
+- **Volumes**:
   - `/app/data/papers` - Input PDFs
   - `/app/data/processed` - Grobid XML outputs
   - `/app/results` - Analysis results
@@ -587,6 +603,39 @@ conda env export > environment.yml
 ```bash
 docker build -t ai-open-science:v1.0 .
 ```
+
+### Running the container
+
+Start Grobid first in a separate terminal:
+```bash
+docker run --rm -p 8070:8070 lfoppiano/grobid:0.8.0
+```
+
+Then run each analysis script with Docker:
+```bash
+docker run --rm \
+  -v $(pwd)/data:/app/data \
+  -v $(pwd)/results:/app/results \
+  -e GROBID_URL=http://host.docker.internal:8070 \
+  ai-open-science:v1.0 python src/extract_text.py
+
+docker run --rm \
+  -v $(pwd)/data:/app/data \
+  -v $(pwd)/results:/app/results \
+  ai-open-science:v1.0 python src/keyword_cloud.py
+
+docker run --rm \
+  -v $(pwd)/data:/app/data \
+  -v $(pwd)/results:/app/results \
+  ai-open-science:v1.0 python src/figures_analysis.py
+
+docker run --rm \
+  -v $(pwd)/data:/app/data \
+  -v $(pwd)/results:/app/results \
+  ai-open-science:v1.0 python src/links_extraction.py
+```
+
+> **Note for Linux users**: Replace `host.docker.internal` with `172.17.0.1` in the `GROBID_URL`.
 
 ## Reproducibility Notes
 
@@ -618,6 +667,7 @@ If you encounter any issues or have questions about this project:
 **Juan Manuel Novoa Guevara**
 - Universidad Politécnica de Madrid
 - Github user: [Juanmng02]
+
 ## Citation
 
 If you use this software in your research, please cite it as:
