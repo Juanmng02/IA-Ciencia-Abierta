@@ -36,3 +36,4 @@ data/processed/*.xml
 # Virtual environments
 env/
 venv/
+.pytest_cache/
