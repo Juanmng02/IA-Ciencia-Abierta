@@ -1,0 +1,55 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "AI Open Science - Task 1: Text Extraction and Analysis",
+  "description": "Automated analysis of open-access scientific articles using Grobid and Python. Includes keyword cloud generation from abstracts, visualization of figure counts per article, and extraction of all links found in papers.",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-01",
+  "datePublished": "2026-02-01",
+  "license": "https://spdx.org/licenses/MIT",
+  "codeRepository": "https://github.com/Juanmng02/IA-Ciencia-Abierta",
+  "issueTracker": "https://github.com/Juanmng02/IA-Ciencia-Abierta/issues",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "Python",
+    "version": "3.10"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Juan Manuel",
+      "familyName": "Novoa Guevara",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Universidad Politécnica de Madrid"
+      }
+    }
+  ],
+  "identifier": "https://doi.org/10.5281/zenodo.18912872",
+  "keywords": [
+    "open science",
+    "text extraction",
+    "Grobid",
+    "keyword cloud",
+    "paleontology",
+    "Python",
+    "reproducible research",
+    "NLP"
+  ],
+  "runtimePlatform": "Python 3.10",
+  "operatingSystem": ["Linux", "Windows", "macOS"],
+  "softwareRequirements": [
+    "Python >= 3.10",
+    "Docker",
+    "Grobid 0.8.0"
+  ],
+  "developmentStatus": "active",
+  "isPartOf": {
+    "@type": "Course",
+    "name": "Open Science and AI in Research Software Engineering",
+    "provider": {
+      "@type": "Organization",
+      "name": "Universidad Politécnica de Madrid"
+    }
+  }
+}

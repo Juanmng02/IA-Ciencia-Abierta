@@ -1,0 +1,30 @@
+site_name: AI Open Science - Task 1
+site_description: Automated analysis of open-access scientific articles using Grobid and Python
+site_author: Juan Manuel Novoa Guevara
+site_url: https://ia-ciencia-abierta.readthedocs.io
+
+repo_name: Juanmng02/IA-Ciencia-Abierta
+repo_url: https://github.com/Juanmng02/IA-Ciencia-Abierta
+
+theme:
+  name: material
+  palette:
+    primary: blue
+    accent: light blue
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - API Reference: api.md
+  - Contributing: contributing.md
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true

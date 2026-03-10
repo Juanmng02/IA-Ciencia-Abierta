@@ -1,8 +1,10 @@
 # AI Open Science - Task 1: Text Extraction and Analysis
 
+[![DOI](https://zenodo.org/badge/1158448998.svg)](https://doi.org/10.5281/zenodo.18912872)
+
 ## Description
 
-This project performs automated analysis on 9 open-access scientific articles using Grobid and Python. The analysis includes:
+This project performs automated analysis on 10 open-access scientific articles using Grobid and Python. The analysis includes:
 
 - Keyword cloud generation from abstracts
 - Visualization of figure counts per article  
@@ -30,13 +32,15 @@ ai-open-science-task1/
 ├── .dockerignore            # Docker build exclusions
 ├── docker-compose.yml       # Multi-container orchestration
 ├── data/
-│   ├── papers/              # Original PDF files (9 papers, not in repo)
+│   ├── papers/              # Original PDF files (not in repo)
 │   └── processed/           # Grobid XML outputs (generated)
 ├── src/
 │   ├── extract_text.py      # Grobid processing pipeline
 │   ├── keyword_cloud.py     # Abstract keyword analysis
 │   ├── figures_analysis.py  # Figure counting
 │   └── links_extraction.py  # URL extraction
+├── tests/
+│   └── test_analysis.py     # Unit tests (pytest)
 └── results/
     ├── figures/             # Generated visualizations
     └── outputs/             # Analysis results (CSV)
@@ -138,7 +142,7 @@ docker-compose logs -f
 
 ## Dataset
 
-This project analyzes **9 open-access papers** from arXiv.org:
+This project analyzes **10 open-access papers** from arXiv.org:
 
 - **Source**: arXiv.org
 - **Category**: Computer Science (cs.AI / cs.LG / cs.CV)
@@ -165,7 +169,7 @@ python src/extract_text.py
 
 This processes all PDFs in `data/papers/` and saves XML outputs to `data/processed/`.
 
-**Expected output**: 9 XML files in `data/processed/`
+**Expected output**: XML files in `data/processed/`
 
 ### Step 2: Generate Keyword Cloud
 ```bash
@@ -214,6 +218,167 @@ When finished:
 ```bash
 conda deactivate
 ```
+
+## Running Examples
+
+### extract_text.py
+
+```
+$ docker-compose exec analysis python src/extract_text.py
+Found 1 PDF files to process
+Using Grobid at http://grobid:8070
+
+Successfully processed: paper6.pdf
+
+Processing complete: 1/1 files successful
+```
+
+### keyword_cloud.py
+
+```
+$ docker-compose exec analysis python src/keyword_cloud.py
+Found 10 XML files
+Extracted abstract from: paper1 (79 words)
+Extracted abstract from: paper10 (62 words)
+Extracted abstract from: paper2 (247 words)
+Extracted abstract from: paper3 (122 words)
+Extracted abstract from: paper4 (89 words)
+Extracted abstract from: paper5 (103 words)
+Extracted abstract from: paper6 (64 words)
+Extracted abstract from: paper7 (84 words)
+Extracted abstract from: paper8 (92 words)
+Extracted abstract from: paper9 (53 words)
+
+Total words extracted: 995
+Unique words: 664
+
+Top 10 keywords:
+  geodiversitas: 15
+  species: 13
+  late: 9
+  distribution: 6
+  analysis: 5
+  genus: 4
+Word cloud saved to: results/figures/keyword_cloud.png
+Keyword frequencies saved to: results/outputs/keyword_frequencies.csv
+```
+
+![Keyword Cloud](results/figures/keyword_cloud.png)
+
+### figures_analysis.py
+
+```
+$ docker-compose exec analysis python src/figures_analysis.py
+Found 10 XML files
+paper1: 4 figures
+paper10: 18 figures
+paper2: 7 figures
+paper3: 25 figures
+paper4: 9 figures
+paper5: 9 figures
+paper6: 3 figures
+paper7: 49 figures
+paper8: 3 figures
+paper9: 2 figures
+
+Statistics:
+Total figures: 129
+Average figures per paper: 12.90
+Min figures: 2
+Max figures: 49
+
+Figure counts saved to: results/outputs/figure_counts.csv
+Visualization saved to: results/figures/figures_per_paper.png
+```
+
+![Figures per Paper](results/figures/figures_per_paper.png)
+
+### links_extraction.py
+
+```
+$ docker-compose exec analysis python src/links_extraction.py
+Found 10 XML files
+paper1: 1 links found
+paper10: 128 links found
+paper2: 2 links found
+paper3: 2 links found
+paper4: 74 links found
+paper5: 98 links found
+paper6: 78 links found
+paper7: 68 links found
+paper8: 2 links found
+paper9: 26 links found
+
+Total links extracted: 479
+Links saved to: results/outputs/extracted_links.csv
+
+Links by category:
+  doi: 374
+  other: 94
+  code_repository: 11
+
+Average links per paper: 47.9
+```
+
+## Tests
+
+This project includes 28 unit tests covering all analysis scripts.
+
+### Running the tests
+
+```bash
+python -m pytest tests/ -v
+```
+
+### Expected output
+
+```
+$ python -m pytest tests/ -v
+================================================= test session starts ==================================================
+platform linux -- Python 3.10.19, pytest-9.0.2, pluggy-1.6.0
+collected 28 items
+
+tests/test_analysis.py::TestCountFigures::test_counts_explicit_type_figures PASSED       [  3%]
+tests/test_analysis.py::TestCountFigures::test_returns_zero_for_empty_xml PASSED         [  7%]
+tests/test_analysis.py::TestCountFigures::test_returns_zero_for_missing_file PASSED      [ 10%]
+tests/test_analysis.py::TestCountFigures::test_returns_integer PASSED                    [ 14%]
+tests/test_analysis.py::TestExtractAbstract::test_extracts_abstract_text PASSED          [ 17%]
+tests/test_analysis.py::TestExtractAbstract::test_returns_empty_string_when_no_abstract PASSED [ 21%]
+tests/test_analysis.py::TestExtractAbstract::test_returns_empty_string_for_missing_file PASSED [ 25%]
+tests/test_analysis.py::TestCleanText::test_removes_stopwords PASSED                     [ 28%]
+tests/test_analysis.py::TestCleanText::test_removes_short_words PASSED                   [ 32%]
+tests/test_analysis.py::TestCleanText::test_converts_to_lowercase PASSED                 [ 35%]
+tests/test_analysis.py::TestCleanText::test_returns_list PASSED                          [ 39%]
+tests/test_analysis.py::TestCleanText::test_empty_string_returns_empty_list PASSED       [ 42%]
+tests/test_analysis.py::TestCleanText::test_keeps_relevant_keywords PASSED               [ 46%]
+tests/test_analysis.py::TestExtractLinks::test_extracts_ptr_links PASSED                 [ 50%]
+tests/test_analysis.py::TestExtractLinks::test_extracts_ref_links PASSED                 [ 53%]
+tests/test_analysis.py::TestExtractLinks::test_extracts_text_links PASSED                [ 57%]
+tests/test_analysis.py::TestExtractLinks::test_returns_empty_list_for_empty_xml PASSED   [ 60%]
+tests/test_analysis.py::TestExtractLinks::test_returns_empty_list_for_missing_file PASSED [ 64%]
+tests/test_analysis.py::TestExtractLinks::test_no_duplicate_urls PASSED                  [ 67%]
+tests/test_analysis.py::TestCategorizeUrl::test_github_is_code_repository PASSED         [ 71%]
+tests/test_analysis.py::TestCategorizeUrl::test_gitlab_is_code_repository PASSED         [ 75%]
+tests/test_analysis.py::TestCategorizeUrl::test_doi_is_doi PASSED                        [ 78%]
+tests/test_analysis.py::TestCategorizeUrl::test_arxiv_is_arxiv PASSED                    [ 82%]
+tests/test_analysis.py::TestCategorizeUrl::test_unknown_domain_is_other PASSED           [ 85%]
+tests/test_analysis.py::TestCategorizeUrl::test_returns_string PASSED                    [ 89%]
+tests/test_analysis.py::TestProcessPdfWithGrobid::test_returns_true_on_success PASSED    [ 92%]
+tests/test_analysis.py::TestProcessPdfWithGrobid::test_returns_false_on_error_status PASSED [ 96%]
+tests/test_analysis.py::TestProcessPdfWithGrobid::test_returns_false_on_connection_error PASSED [100%]
+
+================================================== 28 passed in 1.99s ==================================================
+```
+
+### Test coverage
+
+| Module | Tests |
+|--------|-------|
+| `figures_analysis.py` | 4 tests |
+| `keyword_cloud.py` | 9 tests |
+| `links_extraction.py` | 9 tests |
+| `extract_text.py` | 3 tests (mocked) |
+| **Total** | **28 tests** |
 
 ## Validation
 
@@ -264,8 +429,8 @@ This section explains how each analysis output was validated to ensure accuracy 
 | paper9 | 2 | 2 | ✓ |
 
 - Accuracy: 100% on validated sample
-- Total figures detected: 126 across 9 papers
-- Average: 14.0 figures per paper
+- Total figures detected: 129 across 10 papers
+- Average: 12.90 figures per paper
 
 **Technical Notes**:
 - Grobid marks figures in XML as `<figure>` elements
@@ -291,12 +456,12 @@ This section explains how each analysis output was validated to ensure accuracy 
 5. Tested link validity using HTTP requests
 
 **Results**:
-- Total links extracted: 401 across 9 papers
+- Total links extracted: 479 across 10 papers
 - Link categories found:
-  - DOI links: 302 (75.3%)
-  - Other resources: 89 (22.2%)
-  - Code repositories: 10 (2.5%)
-- Average links per paper: 44.6
+  - DOI links: 374 (78%)
+  - Other resources: 94 (19.6%)
+  - Code repositories: 11 (2.3%)
+- Average links per paper: 47.9
 - Sample validation: 20 links checked
   - Valid URLs: 18/20 (90%)
   - Broken links: 2/20 (10%)
@@ -322,28 +487,28 @@ This section explains how each analysis output was validated to ensure accuracy 
 
 | Metric | Value |
 |--------|-------|
-| Total papers analyzed | 9 |
-| Total figures found | 126 |
-| Average figures per paper | 14.0 |
+| Total papers analyzed | 10 |
+| Total figures found | 129 |
+| Average figures per paper | 12.90 |
 | Min figures per paper | 2 |
 | Max figures per paper | 49 |
-| Total links extracted | 401 |
-| Unique keywords | 621 |
+| Total links extracted | 479 |
+| Unique keywords | 664 |
 
 ### Key Findings
 
 - Papers vary significantly in figure count (2-49), indicating different visualization strategies
-- Average of 14 figures per paper demonstrates heavy use of visual explanations in paleontology research
+- Average of 12.90 figures per paper demonstrates heavy use of visual explanations in paleontology research
 - Top keywords: geodiversitas (15), species (13), late (9), analysis (5), genus (4)
-- Most links are DOIs (302 out of 401, 75.3%), showing strong citation practices
-- 10 code repositories referenced (2.5%), indicating emerging reproducibility efforts in the field
+- Most links are DOIs (374 out of 479, 78%), showing strong citation practices
+- 11 code repositories referenced (2.3%), indicating emerging reproducibility efforts in the field
 
 ## Limitations
 
 ### Data Processing
 - **PDF Quality**: Grobid's accuracy depends on PDF structure. Scanned PDFs or complex layouts may result in incomplete extraction
 - **Language**: Optimized for English scientific papers. Other languages may have lower accuracy
-- **Paper Selection**: Limited to 9 papers from arXiv in paleontology/earth sciences. Results may not generalize to other domains
+- **Paper Selection**: Limited to 10 papers from arXiv in paleontology/earth sciences. Results may not generalize to other domains
 
 ### Analysis Constraints
 
@@ -380,6 +545,7 @@ This section explains how each analysis output was validated to ensure accuracy 
 - **Python 3.10** - Core programming language
 - **Conda** - Environment and dependency management
 - **Docker** - Grobid containerization and project deployment
+- **pytest** - Unit testing framework
 - **requests** - HTTP communication with Grobid API
 - **pandas** - Data manipulation and CSV export
 - **matplotlib/seaborn** - Data visualization
@@ -431,6 +597,15 @@ docker build -t ai-open-science:v1.0 .
 - Analysis outputs are deterministic given same input papers
 - Random seed not used for sampling in validation
 
+## Getting Help
+
+If you encounter any issues or have questions about this project:
+
+- **Open an issue** on GitHub: https://github.com/Juanmng02/IA-Ciencia-Abierta/issues
+- **Contact the author**: Juan Manuel Novoa Guevara (Universidad Politécnica de Madrid)
+- **Grobid documentation**: https://grobid.readthedocs.io/
+- **Course resources**: Open Science and AI in Research Software Engineering, UPM 2026
+
 ## References
 
 - Grobid: https://github.com/kermitt2/grobid
@@ -440,21 +615,35 @@ docker build -t ai-open-science:v1.0 .
 
 ## Author
 
-**Juan Manuel Moreno García**
+**Juan Manuel Novoa Guevara**
 - Universidad Politécnica de Madrid
-- Master in Artificial Intelligence
-- Course: Open Science and AI in Research Software Engineering
-- February 2026
+- Github user: [Juanmng02]
+## Citation
+
+If you use this software in your research, please cite it as:
+
+```bibtex
+@software{novoa_guevara_2026,
+  author       = {Novoa Guevara, Juan Manuel},
+  title        = {AI Open Science - Task 1: Text Extraction and Analysis},
+  year         = 2026,
+  publisher    = {GitHub},
+  doi          = {10.5281/zenodo.18912872},
+  url          = {https://github.com/Juanmng02/IA-Ciencia-Abierta}
+}
+```
+
+For full citation metadata, see the [CITATION.cff](CITATION.cff) file.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Citation
+## Acknowledgements
 
-If you use this software in your research, please cite it as specified in the [CITATION.cff](CITATION.cff) file.
+This project was developed as part of the **Open Science and AI in Research Software Engineering** course at the Universidad Politécnica de Madrid (UPM), 2026.
 
-## Acknowledgments
-
-
-
+Special thanks to:
+- The course instructors and teaching staff at UPM for their guidance on open science practices
+- The [Grobid](https://github.com/kermitt2/grobid) team for their open-source PDF extraction tool
+- The authors of the 10 open-access papers analyzed in this project

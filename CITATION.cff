@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "AI Open Science - Task 1: Text Extraction and Analysis"
+abstract: "Automated analysis of open-access scientific articles using Grobid and Python. 
+  Includes keyword cloud generation from abstracts, visualization of figure counts per 
+  article, and extraction of all links found in papers."
+authors:
+  - family-names: "Novoa Guevara"
+    given-names: "Juan Manuel"
+    affiliation: "Universidad Politécnica de Madrid"
+version: "1.0.0"
+date-released: "2026-02-01"
+license: MIT
+repository-code: "https://github.com/Juanmng02/IA-Ciencia-Abierta"
+doi: "10.5281/zenodo.18912872"
+keywords:
+  - open science
+  - text extraction
+  - Grobid
+  - keyword cloud
+  - paleontology
+  - Python
+  - reproducible research
+references:
+  - type: software
+    title: "GROBID"
+    authors:
+      - family-names: "Lopez"
+        given-names: "Patrice"
+    url: "https://github.com/kermitt2/grobid"
