@@ -1,6 +1,7 @@
 # AI Open Science - Task 1: Text Extraction and Analysis
 
 [![DOI](https://zenodo.org/badge/1158448998.svg)](https://doi.org/10.5281/zenodo.18912872)
+[![Documentation Status](https://readthedocs.org/projects/ia-ciencia-abierta/badge/?version=latest)](https://ia-ciencia-abierta.readthedocs.io/en/latest/)
 
 ## Description
 
